@@ -1,10 +1,13 @@
 package com.bandanishanth.tools;
 
+import org.apache.camel.component.amqp.AMQPComponent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Properties;
 
-import org.apache.camel.component.amqp.AMQPComponent;
-
 public class CreateAMQPComponent {
+    static Logger logger = LoggerFactory.getLogger(CreateAMQPComponent.class);
     public static AMQPComponent createComponentFromProperties(Properties amqpProperties) {
         AMQPComponent amqpComponent;
 
@@ -26,7 +29,7 @@ public class CreateAMQPComponent {
 
         boolean authRequired = amqpProperties.getProperty("authRequired").equals("true");
 
-        System.out.println("The URI used to create the AMQP Camel Component is: " + uri);
+        logger.info("The URI used to create the AMQP Camel Component is: {}", uri);
 
         if (authRequired) {
             String username = amqpProperties.getProperty("username");

@@ -1,8 +1,12 @@
 package com.bandanishanth.tools;
 
 import org.apache.camel.builder.RouteBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AMQPWriteRoute extends RouteBuilder {
+
+    static Logger logger = LoggerFactory.getLogger(AMQPWriteRoute.class);
 
     String queueName;
     String queueParameters;
@@ -22,9 +26,7 @@ public class AMQPWriteRoute extends RouteBuilder {
     }
 
     public void configure() {
-        System.out.println("=======================================================================================");
-        System.out.println("The Camel Endpoint String used is: " + this.endpointString);
-        System.out.println("=======================================================================================");
+        logger.info("The Camel Endpoint String used is: {}", this.endpointString);
 
         from("timer:SendStringToQueue?period=2000&repeatCount=1")
                 .setBody(simple(message))

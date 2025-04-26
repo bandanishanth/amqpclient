@@ -1,19 +1,25 @@
 package com.bandanishanth.tools;
 
-import java.util.Properties;
-
 import org.apache.camel.CamelContext;
 import org.apache.camel.component.amqp.AMQPComponent;
 import org.apache.camel.impl.DefaultCamelContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Properties;
 
 public class AmqpClient {
+    static Logger logger = LoggerFactory.getLogger(AmqpClient.class);
+    public static final String AMQP_CLIENT_MESSAGE_BANNER = "===============================CAMEL AMQP CLIENT===============================";
+
+    //public static final String OUTPUT_SECTION_DELIMITER_STRING = "==============================================================";
     public static void main(String[] args) throws Exception {
 
         if (args.length > 0 && !args[0].isEmpty()) {
 
             Properties amqpProperties = PropertiesUtil.loadProperties(args[0]);
 
-            System.out.println("===============================CAMEL AMQP CLIENT===============================");
+            logger.info(AMQP_CLIENT_MESSAGE_BANNER);
 
             if (PropertiesUtil.validateProperties()) {
 
@@ -33,8 +39,7 @@ public class AmqpClient {
 
                 if (operation.equalsIgnoreCase("read")) {
 
-                    System.out.println("This utility will only connect and listen for messages for a maximum of " + timeout
-                            + " seconds.\n");
+                    logger.info("This utility will only connect and listen for messages for a maximum of {} seconds.", timeout);
 
                     camelContext.addRoutes(new AMQPReadRoute(queueName, queueParameters));
 
@@ -48,20 +53,18 @@ public class AmqpClient {
 
                 Thread.sleep(timeout * 1000L);
 
-                System.out.println("\n==============================================================\n");
-                System.out.println("Closing connection and stopping the utility as timeout was reached.");
-                System.out.println("\n==============================================================\n");
+                logger.info("Closing connection and stopping the utility as timeout was reached.");
 
                 //Stop and close the Camel Context
                 camelContext.stop();
                 camelContext.close();
 
             } else {
-                System.out.println("The properties file provided seems to have some missing/invalid values.");
-                System.out.println("Please rerun the utility after providing a valid properties file.");
+                logger.info("The properties file provided seems to have some missing/invalid values.");
+                logger.info("Please rerun the utility after providing a valid properties file.");
             }
 
-            System.out.println("==================CAMEL AMQP CLIENT==================");
+            logger.info("==================CAMEL AMQP CLIENT==================");
         } else {
             System.out.println("Usage is: java -jar <JAR_NAME> <PATH>/amqp.properties");
         }
