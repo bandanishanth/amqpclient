@@ -4,9 +4,16 @@ This java based utility is based on Apache Camel to connect to an AMQP Messaging
 
 The tool take in a properties file as input (Sample properties file provided below).
 
-The Syntax to invoe the utility is:
+The Syntax to invoke the utility is:
 
 `java -jar amqpclient.jar /path/to/amqp.properties`
+
+## Build Instructions
+
+To build this project, one needs to have maven installed on the machine.
+Run the command below which will create a single FAT jar in the target directory.
+
+`mvn clean compile assembly:single`
 
 ## Sample Properties File
 
